@@ -138,7 +138,7 @@ export const projectsData: Project[] = [
     images: [{ src: "/projects/ecommerce.png", label: "Ecommerce", type: "desktop" }],
     tags: ["Typescript", "Supabase", "Node", "Tailwind CSS"],
     category: "Full Stack",
-    liveUrl: "https://cozyhandmade.vercel.app/",
+    liveUrl: "https://cozihandmade.com",
     githubUrl: "#",
   },
 ];
