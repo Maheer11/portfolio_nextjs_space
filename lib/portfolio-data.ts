@@ -25,7 +25,7 @@ export const heroData = {
 export const aboutData = {
   heading: 'About Me',
   paragraphs: [
-    'I\'m a versatile software engineer and co-founder of Ketapay, an escrow platform securing payments for Nigerian businesses that buy and sell online. Originally trained in the sciences, I transitioned into software engineering in 2023 and have since taken on full product ownership, hands-on QA, and engineering leadership.',
+    'I\'m a versatile software engineer and founding member of Ketapay, an escrow platform securing payments for Nigerian businesses that buy and sell online. Originally trained in the sciences, I transitioned into software engineering in 2023 and have since taken on full product ownership, hands-on QA, and engineering leadership.',
     'I build responsive, user-centered web and mobile products across the stack — from React and TypeScript front-ends to Java/Spring Boot services. I move fluently between writing code, reading and reasoning about unfamiliar codebases, and shaping raw ideas into clear, buildable solutions.',
     'I\'m known as a fast learner and dependable problem solver who ships reliable software in collaborative teams. When I\'m not building, you\'ll find me playing football or basketball, exploring board games, or working on side projects.',
   ],

@@ -9,14 +9,11 @@ import {
   useSpring,
 } from 'framer-motion';
 import {
-  ArrowRight,
   ChevronDown,
   FlaskConical,
   MousePointerClick,
   Network,
   Quote,
-  X,
-  Check,
   Zap,
 } from 'lucide-react';
 
@@ -245,38 +242,48 @@ function ChallengeRow({
   onToggle: () => void;
 }) {
   return (
-    <div className="rounded-2xl bg-gradient-to-br from-card to-card/80 border border-border/60 hover:border-primary/40 transition-colors overflow-hidden">
+    <div
+      className={`border-l-2 pl-5 sm:pl-6 transition-colors ${
+        isOpen ? 'border-primary' : 'border-border/60'
+      }`}
+    >
       <button
         onClick={onToggle}
         aria-expanded={isOpen}
-        className="w-full text-left p-5 sm:p-6 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50"
+        className="w-full text-left py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 group"
       >
-        <span className="block font-mono text-xs text-primary/80 tracking-wider mb-2">
-          {String(index + 1).padStart(2, '0')} · {challenge.what.toUpperCase()}
-        </span>
-        <span className="flex flex-wrap items-center gap-2">
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-muted px-2.5 py-1 text-xs text-muted-foreground">
-            <X className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
-            {challenge.flipFrom}
-          </span>
-          <ArrowRight className="w-3.5 h-3.5 text-primary/70 flex-shrink-0" aria-hidden="true" />
-          <span className="inline-flex items-center gap-1.5 rounded-md bg-primary/10 px-2.5 py-1 text-xs font-semibold text-primary">
-            <Check className="w-3 h-3 flex-shrink-0" aria-hidden="true" />
-            {challenge.flipTo}
-          </span>
-        </span>
-        <span className="mt-3 flex items-center justify-between gap-4">
-          <span className="flex items-center gap-2 text-sm text-primary font-medium">
-            <Zap className="w-4 h-4 flex-shrink-0" />
-            {challenge.impact}
+        <span className="flex items-start justify-between gap-4">
+          <span className="font-mono text-xs text-primary/80 tracking-wider">
+            {String(index + 1).padStart(2, '0')} · {challenge.what.toUpperCase()}
           </span>
           <motion.span
             animate={{ rotate: isOpen ? 180 : 0 }}
             transition={{ duration: 0.25 }}
-            className="text-muted-foreground flex-shrink-0"
+            className="text-muted-foreground flex-shrink-0 group-hover:text-primary transition-colors"
           >
-            <ChevronDown className="w-5 h-5" />
+            <ChevronDown className="w-4 h-4" />
           </motion.span>
+        </span>
+
+        {/* Before / After */}
+        <span className="mt-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-6">
+          <span className="flex-1">
+            <span className="block text-[10px] font-semibold tracking-widest text-muted-foreground/70 uppercase mb-1">
+              Before
+            </span>
+            <span className="text-sm text-muted-foreground">{challenge.flipFrom}</span>
+          </span>
+          <span className="flex-1">
+            <span className="block text-[10px] font-semibold tracking-widest text-primary/80 uppercase mb-1">
+              After
+            </span>
+            <span className="text-sm font-medium text-foreground">{challenge.flipTo}</span>
+          </span>
+        </span>
+
+        <span className="mt-3 flex items-center gap-2 text-sm text-primary">
+          <Zap className="w-4 h-4 flex-shrink-0" />
+          {challenge.impact}
         </span>
       </button>
       <AnimatePresence initial={false}>
@@ -288,9 +295,7 @@ function ChallengeRow({
             transition={{ duration: 0.3, ease: 'easeOut' }}
             className="overflow-hidden"
           >
-            <p className="px-5 sm:px-6 pb-5 sm:pb-6 text-muted-foreground leading-relaxed">
-              {challenge.learned}
-            </p>
+            <p className="pb-5 text-muted-foreground leading-relaxed">{challenge.learned}</p>
           </motion.div>
         )}
       </AnimatePresence>
@@ -401,7 +406,7 @@ export default function CaseStudySection() {
               <p className="text-sm text-muted-foreground mb-8">
                 The short version below — expand any row for the full story.
               </p>
-              <div className="space-y-4">
+              <div className="space-y-1 divide-y divide-border/40">
                 {ketapayCaseStudy.challenges.map((challenge, idx) => (
                   <ChallengeRow
                     key={idx}

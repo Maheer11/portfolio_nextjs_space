@@ -637,17 +637,10 @@ export default function HeroSection() {
                     transition={{ duration: 2, repeat: Infinity }}
                   />
 
-                  {/* Text with underline animation */}
                   <div className="relative">
                     <span className="text-base sm:text-lg font-bold text-primary uppercase tracking-widest">
                       Software Engineer
                     </span>
-                    <motion.div
-                      className="absolute bottom-0 left-0 h-0.5 bg-gradient-to-r from-primary to-transparent"
-                      initial={{ width: 0 }}
-                      animate={{ width: '100%' }}
-                      transition={{ duration: 0.8, ease: 'easeOut', delay: 1 }}
-                    />
                   </div>
                 </motion.div>
 

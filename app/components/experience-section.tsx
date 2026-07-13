@@ -39,7 +39,7 @@ function ExperienceCard({ exp, index }: { exp: Experience; index: number }) {
       <div className="ml-0 pl-8">
         <motion.button
           onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full text-left group rounded-2xl bg-gradient-to-br from-card to-card/80 border border-border/60 hover:border-primary/40 shadow-md hover:shadow-lg transition-all duration-300 p-5"
+          className="w-full text-left group rounded-2xl bg-gradient-to-br from-card to-card/80 border border-border/60 hover:border-primary/40 shadow-md hover:shadow-lg transition-all duration-300 p-4 sm:p-5"
           whileHover={{ y: -2 }}
         >
           {/* Card Header */}
@@ -67,7 +67,7 @@ function ExperienceCard({ exp, index }: { exp: Experience; index: number }) {
           </div>
 
           {/* Preview Description (always visible) */}
-          <p className="text-xs text-muted-foreground leading-relaxed mt-2.5 line-clamp-2">
+          <p className="text-xs text-muted-foreground leading-relaxed mt-1.5 sm:mt-2.5 line-clamp-2">
             {exp?.description ?? ''}
           </p>
         </motion.button>
@@ -82,7 +82,7 @@ function ExperienceCard({ exp, index }: { exp: Experience; index: number }) {
               transition={{ duration: 0.3 }}
               className="overflow-hidden"
             >
-              <div className="mt-2 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 p-4">
+              <div className="mt-1 sm:mt-2 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 p-3 sm:p-4">
                 {/* Full Description */}
                 <div className="mb-4">
                   <p className="text-sm text-muted-foreground leading-relaxed">
