@@ -66,10 +66,12 @@ function ExperienceCard({ exp, index }: { exp: Experience; index: number }) {
             </motion.div>
           </div>
 
-          {/* Preview Description (always visible) */}
-          <p className="text-xs text-muted-foreground leading-relaxed mt-1.5 sm:mt-2.5 line-clamp-2">
-            {exp?.description ?? ''}
-          </p>
+          {/* Preview Description (collapsed only — full text shows below when expanded) */}
+          {!isExpanded && (
+            <p className="text-xs text-muted-foreground leading-relaxed mt-1.5 sm:mt-2.5 line-clamp-2">
+              {exp?.description ?? ''}
+            </p>
+          )}
         </motion.button>
 
         {/* Expandable Details */}
@@ -84,14 +86,14 @@ function ExperienceCard({ exp, index }: { exp: Experience; index: number }) {
             >
               <div className="mt-1 sm:mt-2 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 p-3 sm:p-4">
                 {/* Full Description */}
-                <div className="mb-4">
+                <div className="mb-3 sm:mb-4">
                   <p className="text-sm text-muted-foreground leading-relaxed">
                     {exp?.description ?? ''}
                   </p>
                 </div>
 
                 {/* Technologies */}
-                <div className="mb-4">
+                <div className="mb-3 sm:mb-4">
                   <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2.5">
                     Tech Stack
                   </p>
