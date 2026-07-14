@@ -18,11 +18,11 @@ export default function HomePage() {
       <Navbar />
       <HeroSection />
       <AboutSection />
+      <ProjectsSection />
       <CaseStudySection />
       <PrinciplesSection />
       <CoreStrengthsSection />
       <SkillsSection />
-      <ProjectsSection />
       <ExperienceSection />
       <NowSection />
       <ResumeSection />

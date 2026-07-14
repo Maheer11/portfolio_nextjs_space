@@ -1,136 +1,208 @@
 'use client';
 
-import { useState } from 'react';
-import { Briefcase, ChevronDown } from 'lucide-react';
-import { motion, AnimatePresence } from 'framer-motion';
-import { experienceData, type Experience } from '@/lib/portfolio-data';
+import { useEffect, useMemo, useState } from 'react';
+import { AnimatePresence, motion, useReducedMotion } from 'framer-motion';
+import { ArrowLeft, Briefcase, ChevronRight, Trophy } from 'lucide-react';
+import { experienceData, type Experience, type ExperienceCategory } from '@/lib/portfolio-data';
 import { Section } from '@/components/layouts/section';
 import { Container } from '@/components/layouts/container';
 import { FadeIn } from '@/components/ui/animate';
 import { Badge } from '@/components/ui/badge';
+import { cn } from '@/lib/utils';
 
-function ExperienceCard({ exp, index }: { exp: Experience; index: number }) {
-  const [isExpanded, setIsExpanded] = useState(index === 0);
+type FilterKey = 'all' | ExperienceCategory;
 
+const FILTERS: { key: FilterKey; label: string }[] = [
+  { key: 'all', label: 'All' },
+  { key: 'engineering', label: 'Engineering' },
+  { key: 'qa', label: 'QA' },
+  { key: 'freelance', label: 'Freelance' },
+];
+
+const CATEGORY_META: Record<ExperienceCategory, { label: string; dot: string }> = {
+  engineering: { label: 'Engineering', dot: 'bg-primary' },
+  qa: { label: 'QA', dot: 'bg-chart-2' },
+  freelance: { label: 'Freelance', dot: 'bg-chart-3' },
+};
+
+function CategoryDots({ category }: { category: ExperienceCategory[] }) {
+  if (category.length === 0) {
+    return <span className="w-1.5 h-1.5 rounded-full bg-muted-foreground/40 flex-shrink-0" aria-hidden="true" />;
+  }
   return (
-    <motion.div
-      initial={{ opacity: 0, x: -20 }}
-      whileInView={{ opacity: 1, x: 0 }}
-      transition={{ duration: 0.5, delay: index * 0.1 }}
-      viewport={{ once: true }}
-      className="relative mb-6 last:mb-0"
-    >
-      {/* Timeline Node and Line */}
-      <div className="absolute left-5 top-5 flex flex-col items-center -translate-x-1/2">
-        {/* Node */}
-        <motion.div
-          className="w-4 h-4 rounded-full bg-gradient-to-br from-primary to-primary/70 border-3 border-background shadow-lg z-10"
-          whileHover={{ scale: 1.25 }}
-          whileInView={{ scale: 1 }}
+    <span className="flex items-center gap-1 flex-shrink-0">
+      {category.map((cat) => (
+        <span
+          key={cat}
+          className={cn('w-1.5 h-1.5 rounded-full', CATEGORY_META[cat].dot)}
+          aria-hidden="true"
         />
+      ))}
+    </span>
+  );
+}
 
-        {/* Connecting Line */}
-        {index < experienceData.length - 1 && (
-          <div className="w-0.5 h-20 bg-gradient-to-b from-primary/50 to-primary/10 mt-1" />
+function FilterChips({
+  active,
+  onChange,
+}: {
+  active: FilterKey;
+  onChange: (key: FilterKey) => void;
+}) {
+  return (
+    <div
+      className="flex gap-2 overflow-x-auto md:flex-wrap md:overflow-visible pb-1 [-ms-overflow-style:none] [scrollbar-width:none] [&::-webkit-scrollbar]:hidden"
+      role="group"
+      aria-label="Filter work experience by category"
+    >
+      {FILTERS.map((f) => (
+        <button
+          key={f.key}
+          type="button"
+          onClick={() => onChange(f.key)}
+          aria-pressed={active === f.key}
+          className={cn(
+            'flex-shrink-0 whitespace-nowrap rounded-full border px-3.5 py-1.5 text-xs font-medium transition-colors',
+            'focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50',
+            active === f.key
+              ? 'bg-primary text-primary-foreground border-primary'
+              : 'border-border/60 text-muted-foreground hover:border-primary/40 hover:text-foreground'
+          )}
+        >
+          {f.label}
+        </button>
+      ))}
+    </div>
+  );
+}
+
+function RoleRow({
+  role,
+  active,
+  showMetric,
+  showChevron,
+  onSelect,
+}: {
+  role: Experience;
+  active: boolean;
+  showMetric: boolean;
+  showChevron: boolean;
+  onSelect: () => void;
+}) {
+  return (
+    <button
+      type="button"
+      onClick={onSelect}
+      aria-current={active ? 'true' : undefined}
+      className={cn(
+        'w-full text-left flex items-center gap-3 border-b border-border/50 py-3 px-3 transition-colors last:border-b-0',
+        'hover:bg-muted/40 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 focus-visible:ring-inset',
+        active && 'bg-primary/5 md:border-l-2 md:border-l-primary md:pl-[10px]'
+      )}
+    >
+      <div className="min-w-0 flex-1">
+        <div className="flex items-center gap-2">
+          <CategoryDots category={role.category} />
+          <p className="text-sm font-semibold text-foreground truncate">{role.title}</p>
+        </div>
+        <p className="text-xs text-muted-foreground truncate mt-0.5">
+          {role.company} · {role.period}
+        </p>
+        {showMetric && (
+          <p className="text-xs font-semibold text-chart-2 mt-1.5 leading-snug">
+            {role.keyMetric}
+          </p>
         )}
       </div>
+      {showChevron && (
+        <ChevronRight className="w-4 h-4 text-muted-foreground flex-shrink-0" aria-hidden="true" />
+      )}
+    </button>
+  );
+}
 
-      {/* Experience Card */}
-      <div className="ml-0 pl-8">
-        <motion.button
-          onClick={() => setIsExpanded(!isExpanded)}
-          className="w-full text-left group rounded-2xl bg-gradient-to-br from-card to-card/80 border border-border/60 hover:border-primary/40 shadow-md hover:shadow-lg transition-all duration-300 p-4 sm:p-5"
-          whileHover={{ y: -2 }}
-        >
-          {/* Card Header */}
-          <div className="flex items-start justify-between gap-3">
-            <div className="flex-grow">
-              <h3 className="font-display text-base font-bold text-foreground group-hover:text-primary transition-colors leading-tight">
-                {exp?.title ?? ''}
-              </h3>
-              <p className="text-primary font-semibold text-xs mt-1">
-                {exp?.company ?? ''}
-              </p>
-              <span className="inline-block text-xs font-mono text-muted-foreground bg-muted/50 px-2 py-0.5 rounded-full border border-border/50 mt-1.5">
-                {exp?.period ?? ''}
-              </span>
-            </div>
-
-            {/* Expand/Collapse Icon */}
-            <motion.div
-              animate={{ rotate: isExpanded ? 180 : 0 }}
-              transition={{ duration: 0.3 }}
-              className="flex-shrink-0 mt-0.5"
-            >
-              <ChevronDown className="w-4 h-4 text-primary" />
-            </motion.div>
-          </div>
-
-          {/* Preview Description (collapsed only — full text shows below when expanded) */}
-          {!isExpanded && (
-            <p className="text-xs text-muted-foreground leading-relaxed mt-1.5 sm:mt-2.5 line-clamp-2">
-              {exp?.description ?? ''}
-            </p>
-          )}
-        </motion.button>
-
-        {/* Expandable Details */}
-        <AnimatePresence>
-          {isExpanded && (
-            <motion.div
-              initial={{ opacity: 0, height: 0 }}
-              animate={{ opacity: 1, height: 'auto' }}
-              exit={{ opacity: 0, height: 0 }}
-              transition={{ duration: 0.3 }}
-              className="overflow-hidden"
-            >
-              <div className="mt-1 sm:mt-2 rounded-2xl bg-gradient-to-br from-primary/5 to-primary/10 border border-primary/20 p-3 sm:p-4">
-                {/* Full Description */}
-                <div className="mb-3 sm:mb-4">
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    {exp?.description ?? ''}
-                  </p>
-                </div>
-
-                {/* Technologies */}
-                <div className="mb-3 sm:mb-4">
-                  <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2.5">
-                    Tech Stack
-                  </p>
-                  <div className="flex flex-wrap gap-2">
-                    {(exp?.technologies ?? []).map((tech: string) => (
-                      <Badge
-                        key={tech}
-                        variant="secondary"
-                        className="text-xs font-medium bg-secondary/70 hover:bg-primary/20 border-border/50 hover:border-primary/50 transition-colors"
-                      >
-                        {tech}
-                      </Badge>
-                    ))}
-                  </div>
-                </div>
-
-                {/* Learning */}
-                {exp?.learning && (
-                  <div className="pt-4 border-t border-primary/20">
-                    <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
-                      💡 Key Takeaway
-                    </p>
-                    <p className="text-sm text-muted-foreground italic leading-relaxed">
-                      {exp.learning}
-                    </p>
-                  </div>
-                )}
-              </div>
-            </motion.div>
-          )}
-        </AnimatePresence>
+function RoleDetail({ role }: { role: Experience }) {
+  return (
+    <div>
+      <div className="flex items-center gap-2 mb-3">
+        <CategoryDots category={role.category} />
+        {role.category.map((cat) => (
+          <span key={cat} className="text-xs font-medium text-muted-foreground">
+            {CATEGORY_META[cat].label}
+          </span>
+        ))}
       </div>
-    </motion.div>
+
+      <h3 className="font-display text-xl sm:text-2xl font-bold text-foreground">
+        {role.title}
+      </h3>
+      <p className="text-primary font-semibold text-sm mt-1">
+        {role.company} · {role.period}
+      </p>
+
+      <div className="mt-4 flex items-start gap-3 rounded-xl bg-chart-2/10 border border-chart-2/20 p-4">
+        <Trophy className="w-5 h-5 text-chart-2 flex-shrink-0 mt-0.5" aria-hidden="true" />
+        <p className="text-sm font-bold text-foreground leading-relaxed">{role.keyMetric}</p>
+      </div>
+
+      <p className="text-sm text-muted-foreground leading-relaxed mt-5">{role.description}</p>
+
+      {role.learning && (
+        <div className="mt-5 pt-5 border-t border-border/50">
+          <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-2">
+            Key Takeaway
+          </p>
+          <p className="text-sm text-muted-foreground italic leading-relaxed">{role.learning}</p>
+        </div>
+      )}
+
+      {role.technologies.length > 0 && (
+        <div className="mt-5 flex flex-wrap gap-2">
+          {role.technologies.map((tech) => (
+            <Badge
+              key={tech}
+              variant="outline"
+              className="text-xs font-medium text-muted-foreground border-border/60 bg-transparent"
+            >
+              {tech}
+            </Badge>
+          ))}
+        </div>
+      )}
+    </div>
   );
 }
 
 export default function ExperienceSection() {
+  const prefersReducedMotion = useReducedMotion();
+  const [filter, setFilter] = useState<FilterKey>('all');
+  const [selectedTitle, setSelectedTitle] = useState<string>(experienceData[0].title);
+  const [mobileDetailOpen, setMobileDetailOpen] = useState(false);
+
+  const filteredRoles = useMemo(
+    () => (filter === 'all' ? experienceData : experienceData.filter((r) => r.category.includes(filter))),
+    [filter]
+  );
+
+  useEffect(() => {
+    if (!filteredRoles.some((r) => r.title === selectedTitle)) {
+      setSelectedTitle(filteredRoles[0]?.title ?? '');
+    }
+  }, [filteredRoles, selectedTitle]);
+
+  const selectedRole = filteredRoles.find((r) => r.title === selectedTitle) ?? filteredRoles[0];
+
+  const handleFilterChange = (key: FilterKey) => {
+    setFilter(key);
+  };
+
+  const transition = {
+    initial: prefersReducedMotion ? false : { opacity: 0, x: 12 },
+    animate: { opacity: 1, x: 0 },
+    exit: prefersReducedMotion ? undefined : { opacity: 0, x: -12 },
+    transition: { duration: prefersReducedMotion ? 0 : 0.2, ease: 'easeOut' as const },
+  };
+
   return (
     <Section id="experience" className="bg-muted/20">
       <Container size="lg">
@@ -145,15 +217,70 @@ export default function ExperienceSection() {
             Work Experience
           </h2>
           <p className="text-muted-foreground mt-2">
-            Click any card to expand and see full details
+            Filter by category, or pick a role to see the full story.
           </p>
         </FadeIn>
 
-        {/* Combined Timeline + Accordion */}
-        <div className="mt-12 max-w-3xl mx-auto px-4 sm:px-0">
-          {(experienceData ?? []).map((exp: any, i: number) => (
-            <ExperienceCard key={i} exp={exp} index={i} />
-          ))}
+        <div className="mt-8 max-w-4xl mx-auto">
+          <div className="mb-4">
+            <FilterChips active={filter} onChange={handleFilterChange} />
+          </div>
+
+          {/* Desktop: master-detail split */}
+          <div className="hidden md:flex rounded-2xl border border-border/60 bg-background/40 overflow-hidden">
+            <div className="w-[270px] flex-shrink-0 border-r border-border/60 overflow-y-auto max-h-[600px]">
+              {filteredRoles.map((role) => (
+                <RoleRow
+                  key={role.title}
+                  role={role}
+                  active={role.title === selectedRole?.title}
+                  showMetric={false}
+                  showChevron={false}
+                  onSelect={() => setSelectedTitle(role.title)}
+                />
+              ))}
+            </div>
+            <div className="flex-1 min-w-0 p-6 lg:p-8 overflow-y-auto max-h-[600px] min-h-[420px]">
+              {selectedRole && <RoleDetail role={selectedRole} />}
+            </div>
+          </div>
+
+          {/* Mobile: tap-to-drill-down */}
+          <div className="md:hidden relative overflow-hidden rounded-2xl border border-border/60 bg-background/40 min-h-[420px]">
+            <AnimatePresence initial={false} mode="wait">
+              {!mobileDetailOpen ? (
+                <motion.div key="list" {...transition}>
+                  {filteredRoles.map((role) => (
+                    <RoleRow
+                      key={role.title}
+                      role={role}
+                      active={false}
+                      showMetric
+                      showChevron
+                      onSelect={() => {
+                        setSelectedTitle(role.title);
+                        setMobileDetailOpen(true);
+                      }}
+                    />
+                  ))}
+                </motion.div>
+              ) : (
+                <motion.div key="detail" {...transition}>
+                  <button
+                    type="button"
+                    onClick={() => setMobileDetailOpen(false)}
+                    className="flex items-center gap-2 p-4 text-sm font-medium text-primary focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 rounded-md"
+                  >
+                    <ArrowLeft className="w-4 h-4" aria-hidden="true" />
+                    Back
+                  </button>
+                  <div className="px-4 pb-6">
+                    {selectedRole && <RoleDetail role={selectedRole} />}
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </div>
         </div>
       </Container>
     </Section>

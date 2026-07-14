@@ -1,8 +1,8 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import { Download, FileText, Award, BookOpen } from 'lucide-react';
-import { educationData, siteConfig } from '@/lib/portfolio-data';
+import { Download, Award } from 'lucide-react';
+import { siteConfig } from '@/lib/portfolio-data';
 import { cn } from '@/lib/utils';
 
 export default function ResumeSection() {
@@ -43,9 +43,9 @@ export default function ResumeSection() {
           viewport={{ once: true }}
           className="mb-16 text-center"
         >
-          <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">Resume & Education</h2>
+          <h2 className="text-3xl sm:text-4xl font-bold font-display mb-4">Resume</h2>
           <p className="text-muted-foreground text-lg max-w-2xl mx-auto">
-            Download my full resume or view my education and credentials below.
+            Download my full resume below.
           </p>
         </motion.div>
 
@@ -70,7 +70,7 @@ export default function ResumeSection() {
           </button>
         </motion.div>
 
-        {/* Education Section */}
+        {/* Core Strengths - Timeline Flow */}
         <motion.div
           variants={containerVariants}
           initial="hidden"
@@ -78,40 +78,6 @@ export default function ResumeSection() {
           viewport={{ once: true }}
           className="space-y-8"
         >
-          <motion.div variants={itemVariants}>
-            <div className="flex items-center gap-3 mb-8">
-              <BookOpen className="h-6 w-6 text-primary" />
-              <h3 className="text-2xl font-bold font-display">Education</h3>
-            </div>
-
-            <div className="grid gap-6">
-              {educationData.map((edu, index) => (
-                <motion.div
-                  key={index}
-                  variants={itemVariants}
-                  className={cn(
-                    'p-6 rounded-lg border border-border/50 bg-background/50',
-                    'hover:border-primary/50 hover:bg-background/80 transition-all duration-300'
-                  )}
-                >
-                  <div className="flex items-start justify-between mb-2">
-                    <div>
-                      <h4 className="text-lg font-semibold text-foreground">{edu.degree}</h4>
-                      <p className="text-primary font-medium">{edu.school}</p>
-                    </div>
-                    <span className="text-sm text-muted-foreground font-medium bg-secondary px-3 py-1 rounded-full">
-                      {edu.period}
-                    </span>
-                  </div>
-                  {edu.description && (
-                    <p className="text-muted-foreground text-sm mt-3">{edu.description}</p>
-                  )}
-                </motion.div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Core Strengths - Timeline Flow */}
           <motion.div variants={itemVariants}>
             <div className="flex items-center gap-3 mb-12">
               <Award className="h-6 w-6 text-primary" />

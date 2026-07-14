@@ -638,7 +638,7 @@ export default function HeroSection() {
                   />
 
                   <div className="relative">
-                    <span className="text-base sm:text-lg font-bold text-primary uppercase tracking-widest">
+                    <span className="text-base sm:text-lg font-bold text-foreground uppercase tracking-widest">
                       Software Engineer
                     </span>
                   </div>

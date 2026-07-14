@@ -1,20 +1,17 @@
 'use client';
 
-import { useRef, useState } from 'react';
+import { useRef } from 'react';
 import {
-  AnimatePresence,
   motion,
   useReducedMotion,
   useScroll,
   useSpring,
 } from 'framer-motion';
 import {
-  ChevronDown,
   FlaskConical,
   MousePointerClick,
   Network,
   Quote,
-  Zap,
 } from 'lucide-react';
 
 import { ketapayCaseStudy } from '@/lib/case-study-data';
@@ -227,88 +224,11 @@ function EscrowFlowDiagram({ animate }: { animate: boolean }) {
   );
 }
 
-// ============ Challenge accordion row ============
-type Challenge = (typeof ketapayCaseStudy.challenges)[number];
-
-function ChallengeRow({
-  challenge,
-  index,
-  isOpen,
-  onToggle,
-}: {
-  challenge: Challenge;
-  index: number;
-  isOpen: boolean;
-  onToggle: () => void;
-}) {
-  return (
-    <div
-      className={`border-l-2 pl-5 sm:pl-6 transition-colors ${
-        isOpen ? 'border-primary' : 'border-border/60'
-      }`}
-    >
-      <button
-        onClick={onToggle}
-        aria-expanded={isOpen}
-        className="w-full text-left py-4 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-primary/50 group"
-      >
-        <span className="flex items-start justify-between gap-4">
-          <span className="font-mono text-xs text-primary/80 tracking-wider">
-            {String(index + 1).padStart(2, '0')} · {challenge.what.toUpperCase()}
-          </span>
-          <motion.span
-            animate={{ rotate: isOpen ? 180 : 0 }}
-            transition={{ duration: 0.25 }}
-            className="text-muted-foreground flex-shrink-0 group-hover:text-primary transition-colors"
-          >
-            <ChevronDown className="w-4 h-4" />
-          </motion.span>
-        </span>
-
-        {/* Before / After */}
-        <span className="mt-3 flex flex-col sm:flex-row sm:items-start gap-3 sm:gap-6">
-          <span className="flex-1">
-            <span className="block text-[10px] font-semibold tracking-widest text-muted-foreground/70 uppercase mb-1">
-              Before
-            </span>
-            <span className="text-sm text-muted-foreground">{challenge.flipFrom}</span>
-          </span>
-          <span className="flex-1">
-            <span className="block text-[10px] font-semibold tracking-widest text-primary/80 uppercase mb-1">
-              After
-            </span>
-            <span className="text-sm font-medium text-foreground">{challenge.flipTo}</span>
-          </span>
-        </span>
-
-        <span className="mt-3 flex items-center gap-2 text-sm text-primary">
-          <Zap className="w-4 h-4 flex-shrink-0" />
-          {challenge.impact}
-        </span>
-      </button>
-      <AnimatePresence initial={false}>
-        {isOpen && (
-          <motion.div
-            initial={{ height: 0, opacity: 0 }}
-            animate={{ height: 'auto', opacity: 1 }}
-            exit={{ height: 0, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            className="overflow-hidden"
-          >
-            <p className="pb-5 text-muted-foreground leading-relaxed">{challenge.learned}</p>
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-}
-
 // ============ Main Section ============
 const ROLE_ICONS = [FlaskConical, MousePointerClick, Network];
 
 export default function CaseStudySection() {
   const prefersReducedMotion = useReducedMotion();
-  const [openChallenge, setOpenChallenge] = useState<number | null>(null);
 
   const spineRef = useRef<HTMLDivElement>(null);
   const { scrollYProgress } = useScroll({
@@ -396,34 +316,10 @@ export default function CaseStudySection() {
             </div>
           </SlideIn>
 
-          {/* 03 / Lessons — mindset flips, expandable */}
-          <SlideIn from="left" className="mt-20">
-            <div>
-              <Kicker index={3} label="Lessons" />
-              <h3 className="text-2xl font-bold text-foreground mb-2">
-                Challenges That Taught Me
-              </h3>
-              <p className="text-sm text-muted-foreground mb-8">
-                The short version below — expand any row for the full story.
-              </p>
-              <div className="space-y-1 divide-y divide-border/40">
-                {ketapayCaseStudy.challenges.map((challenge, idx) => (
-                  <ChallengeRow
-                    key={idx}
-                    challenge={challenge}
-                    index={idx}
-                    isOpen={openChallenge === idx}
-                    onToggle={() => setOpenChallenge(openChallenge === idx ? null : idx)}
-                  />
-                ))}
-              </div>
-            </div>
-          </SlideIn>
-
-          {/* 04 / Insight — pull quote */}
+          {/* 03 / Insight — pull quote */}
           <SlideIn from="right" className="mt-20">
             <div className="max-w-3xl">
-              <Kicker index={4} label="Insight" />
+              <Kicker index={3} label="Insight" />
               <figure className="relative rounded-2xl bg-gradient-to-br from-primary/10 to-primary/5 p-8 sm:p-10 border border-primary/20">
                 <Quote className="absolute top-6 left-6 w-8 h-8 text-primary/20" aria-hidden="true" />
                 <blockquote className="relative font-display text-xl sm:text-2xl text-foreground leading-relaxed">
@@ -439,7 +335,7 @@ export default function CaseStudySection() {
           {/* 05 / Now — merged status + why-it's-here footer */}
           <SlideIn from="left" className="mt-20 pb-12">
             <div>
-              <Kicker index={5} label="Now" />
+              <Kicker index={4} label="Now" />
               <div className="grid md:grid-cols-2 gap-6">
                 <div>
                   <h3 className="text-2xl font-bold text-foreground mb-4">Where We Are Now</h3>
