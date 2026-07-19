@@ -445,7 +445,7 @@ function MobileHeroBento({ scrollTo }: { scrollTo: (id: string) => void }) {
         >
           <MobileKicker text="03 / FOCUS" />
           <span className="block text-sm font-semibold text-foreground leading-snug">
-            Full-stack · Fintech
+            Full-stack
           </span>
           <span className="mt-1 block text-xs text-muted-foreground">
             Shipping with quality &amp; speed
@@ -648,7 +648,7 @@ export default function HeroSection() {
                 <div className="grid grid-cols-1 gap-3 sm:gap-4 pt-4 border-t border-primary/10">
                   {[
                     { icon: '→', text: 'Building products that matter', highlight: 'products' },
-                    { icon: '→', text: 'Full-stack • Fintech • Reliable', highlight: 'Fintech' },
+                    { icon: '→', text: 'Full-stack • Reliable', highlight: 'Reliable' },
                     { icon: '→', text: 'Shipping with quality & speed', highlight: 'quality' },
                   ].map((item, idx) => (
                     <motion.div

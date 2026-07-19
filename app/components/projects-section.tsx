@@ -160,7 +160,8 @@ function ProjectCard({ project }: { project: Project }) {
                     target="_blank"
                     rel="noopener noreferrer"
                   >
-                    <ExternalLink className="mr-1.5 h-3.5 w-3.5" /> Live Demo
+                    <ExternalLink className="mr-1.5 h-3.5 w-3.5" />{" "}
+                    {project.liveLabel ?? "Visit Website"}
                   </a>
                 </Button>
               )}

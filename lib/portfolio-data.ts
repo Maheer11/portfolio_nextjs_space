@@ -71,6 +71,8 @@ export type Project = {
   tags: string[];
   category: string;
   liveUrl?: string;
+  /** Button label for liveUrl — defaults to "Visit Website"; use "Live Demo" for demo deployments. */
+  liveLabel?: string;
   githubUrl?: string;
 };
 
@@ -89,7 +91,8 @@ export const projectsData: Project[] = [
     tags: ["Next.js", "TypeScript", "Tailwind CSS", "PostgreSQL"],
     category: "Full Stack",
     liveUrl: "https://constructhq-umber.vercel.app/",
-    // githubUrl: — add when the repo is public
+    liveLabel: "Live Demo",
+    githubUrl: "https://github.com/Maheer11/Constructhq",
   },
   {
     id: "watchlist",
@@ -100,7 +103,8 @@ export const projectsData: Project[] = [
     tags: ["Next.js", "React", "Vite", "Tailwind CSS"],
     category: "Full Stack",
     liveUrl: "https://watchlist-delta-one.vercel.app/",
-    // githubUrl: — add when the repo is public
+    liveLabel: "Live Demo",
+    githubUrl: "https://github.com/Maheer11/Watchlist",
   },
   {
     id: "escrow-platform",
