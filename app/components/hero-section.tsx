@@ -108,14 +108,14 @@ function OrbitalSkills() {
   const prefersReducedMotion = useReducedMotion();
 
   const skills = [
-    { name: 'React', logo: logos.React, speed: 25, size: 'large', proficiency: 95 },
-    { name: 'TypeScript', logo: logos.TypeScript, speed: 28, size: 'large', proficiency: 90 },
-    { name: 'Java', logo: logos.Java, speed: 32, size: 'large', proficiency: 88 },
-    { name: 'Spring Boot', logo: logos['Spring Boot'], speed: 35, size: 'medium', proficiency: 85 },
-    { name: 'Node.js', logo: logos['Node.js'], speed: 38, size: 'medium', proficiency: 87 },
-    { name: 'Next.js', logo: logos['Next.js'], speed: 30, size: 'medium', proficiency: 86 },
-    { name: 'Tailwind', logo: logos.Tailwind, speed: 27, size: 'medium', proficiency: 92 },
-    { name: 'Git', logo: logos.Git, speed: 33, size: 'small', proficiency: 85 },
+    { name: 'React', logo: logos.React, speed: 25, size: 'large' },
+    { name: 'TypeScript', logo: logos.TypeScript, speed: 28, size: 'large' },
+    { name: 'Java', logo: logos.Java, speed: 32, size: 'large' },
+    { name: 'Spring Boot', logo: logos['Spring Boot'], speed: 35, size: 'medium' },
+    { name: 'Node.js', logo: logos['Node.js'], speed: 38, size: 'medium' },
+    { name: 'Next.js', logo: logos['Next.js'], speed: 30, size: 'medium' },
+    { name: 'Tailwind', logo: logos.Tailwind, speed: 27, size: 'medium' },
+    { name: 'Git', logo: logos.Git, speed: 33, size: 'small' },
   ];
 
   const getSizeClass = (size: string) => {
@@ -293,7 +293,6 @@ function SkillIcon({ skill }: { skill: any }) {
       {/* Label Tooltip */}
       <motion.div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-card border border-border/50 rounded-lg px-3 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
         <p className="text-xs font-semibold text-foreground">{skill.name}</p>
-        <p className="text-xs text-muted-foreground">{skill.proficiency}%</p>
       </motion.div>
     </motion.div>
   );

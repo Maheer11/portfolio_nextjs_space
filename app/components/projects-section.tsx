@@ -5,6 +5,7 @@ import {
   FolderKanban,
   ExternalLink,
   Github,
+  FileText,
   Images as ImagesIcon,
 } from "lucide-react";
 import { AnimatePresence, motion, useReducedMotion } from "framer-motion";
@@ -151,7 +152,9 @@ function ProjectCard({ project }: { project: Project }) {
             </div>
           )}
 
-          {(isRealUrl(project.liveUrl) || isRealUrl(project.githubUrl)) && (
+          {(isRealUrl(project.liveUrl) ||
+            isRealUrl(project.githubUrl) ||
+            project.caseStudyHref) && (
             <div className="mt-auto flex gap-3 pt-4">
               {isRealUrl(project.liveUrl) && (
                 <Button size="sm" asChild className="text-xs font-semibold">
@@ -162,6 +165,18 @@ function ProjectCard({ project }: { project: Project }) {
                   >
                     <ExternalLink className="mr-1.5 h-3.5 w-3.5" />{" "}
                     {project.liveLabel ?? "Visit Website"}
+                  </a>
+                </Button>
+              )}
+              {project.caseStudyHref && (
+                <Button
+                  variant="ghost"
+                  size="sm"
+                  asChild
+                  className="text-xs font-semibold"
+                >
+                  <a href={project.caseStudyHref}>
+                    <FileText className="mr-1.5 h-3.5 w-3.5" /> Case Study
                   </a>
                 </Button>
               )}

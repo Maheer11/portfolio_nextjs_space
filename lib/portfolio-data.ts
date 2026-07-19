@@ -10,7 +10,6 @@ export const siteConfig = {
   location: 'Abuja, Nigeria',
   github: 'https://github.com/Maheer11',
   linkedin: 'https://linkedin.com/in/abdul-gafarmahmud',
-  twitter: 'https://twitter.com',
 };
 
 export const heroData = {
@@ -37,24 +36,21 @@ export const aboutData = {
   ],
 };
 
-export type Skill = {
-  name: string;
-  category: string;
+export type SkillGroup = {
+  title: string;
+  skills: string[];
 };
 
-export const skillsData: Skill[] = [
-  // Frontend
-  { name: 'TypeScript', category: 'Frontend' },
-  { name: 'JavaScript', category: 'Frontend' },
-  { name: 'HTML / CSS', category: 'Frontend' },
-  { name: 'Tailwind CSS', category: 'Frontend' },
-  // Backend
-  { name: 'Node.js', category: 'Backend' },
-  { name: 'Supabase', category: 'Backend' },
-  { name: 'Java', category: 'Backend' },
+export const skillGroups: SkillGroup[] = [
+  {
+    title: 'Daily drivers',
+    skills: ['React', 'TypeScript', 'Tailwind', 'Node.js', 'Next.js'],
+  },
+  {
+    title: 'Working knowledge',
+    skills: ['Java', 'Spring Boot', 'Git', 'Supabase'],
+  },
 ];
-
-export const skillCategories = ['All', 'Frontend', 'Backend'] as const;
 
 export type ProjectImage = {
   src: string;
@@ -74,6 +70,8 @@ export type Project = {
   /** Button label for liveUrl — defaults to "Visit Website"; use "Live Demo" for demo deployments. */
   liveLabel?: string;
   githubUrl?: string;
+  /** In-page anchor (e.g. "#case-study") linking the card to its case study section. */
+  caseStudyHref?: string;
 };
 
 export const projectsData: Project[] = [
@@ -108,7 +106,7 @@ export const projectsData: Project[] = [
   },
   {
     id: "escrow-platform",
-    title: "Escrow Platform",
+    title: "Ketapay — Escrow Platform",
     description:
       "An escrow platform securing payments for online transactions between Nigerian businesses.",
     images: [{ src: "/projects/ketapay.png", label: "Escrow app", type: "mobile" }],
@@ -116,23 +114,7 @@ export const projectsData: Project[] = [
     category: "Mobile",
     liveUrl: "https://ketapay.com",
     githubUrl: "#",
-  },
-  {
-    id: "analytics-platform",
-    title: "DataViz Analytics",
-    description:
-      "An interactive analytics platform with customizable dashboards, advanced charting, and automated reporting for business intelligence.",
-    images: [
-      {
-        src: "https://cdn.abacus.ai/images/8749ee05-42d1-4235-867e-aa287b5eef36.png",
-        label: "DataViz Analytics",
-        type: "desktop",
-      },
-    ],
-    tags: ["Python", "React", "D3.js", "PostgreSQL"],
-    category: "Full Stack",
-    liveUrl: "#",
-    githubUrl: "#",
+    caseStudyHref: "#case-study",
   },
   {
     id: "social-platform",
@@ -210,10 +192,10 @@ export const experienceData: Experience[] = [
     company: "Freelance / Personal Projects",
     period: "2025 — Present",
     description:
-      "Built Cozy Handmade, an artisan e-commerce brand landing page and storefront, with Next.js and Supabase. Also built this personal portfolio website with Next.js and Supabase.",
+      "Built Cozi Handmade, an artisan e-commerce brand landing page and storefront, with Next.js and Supabase. Also built this personal portfolio website with Next.js and Supabase.",
     technologies: ["Next.js", "TypeScript", "Supabase"],
     category: ["freelance"],
-    keyMetric: "2 Supabase-backed sites shipped end-to-end: Cozy Handmade storefront and this portfolio.",
+    keyMetric: "2 Supabase-backed sites shipped end-to-end: Cozi Handmade storefront and this portfolio.",
   },
   {
     title: "Front-End Engineer — Scalable TypeScript Refactor (MVP)",

@@ -1,23 +1,25 @@
 'use client';
 
 import { useRef, useEffect, useState } from 'react';
-import { User, MapPin, Mail, ArrowRight } from 'lucide-react';
+import { User, MapPin, Mail } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Image from 'next/image';
-import { aboutData, siteConfig, skillsData } from '@/lib/portfolio-data';
+import { aboutData, siteConfig } from '@/lib/portfolio-data';
 import { Section } from '@/components/layouts/section';
 import { Container } from '@/components/layouts/container';
 import { FadeIn, SlideIn } from '@/components/ui/animate';
 import { useInView } from 'react-intersection-observer';
-import { Button } from '@/components/ui/button';
 
-/* Animated counter */
+/* Animated counter — initial state must be the real value so server-rendered
+   HTML (SEO, no-JS, link previews) never shows "0+"; the count-up only runs
+   client-side once the stat scrolls into view. */
 function AnimatedCounter({ target, label }: { target: number; label: string }) {
-  const [count, setCount] = useState(0);
+  const [count, setCount] = useState(target);
   const { ref, inView } = useInView({ triggerOnce: true, threshold: 0.3 });
 
   useEffect(() => {
     if (!inView) return;
+    setCount(0);
     let start = 0;
     const duration = 1500;
     const step = Math.ceil(target / (duration / 16));
@@ -128,30 +130,6 @@ export default function AboutSection() {
               </div>
             </SlideIn>
 
-            {/* Key Skills Preview */}
-            <SlideIn from="left" delay={0.4}>
-              <div className="mt-8 pt-6 border-t border-border/30">
-                <p className="text-xs font-semibold text-primary uppercase tracking-wider mb-3">Core Technologies</p>
-                <div className="flex flex-wrap gap-2">
-                  {skillsData.slice(0, 5).map((skill) => (
-                    <span
-                      key={skill.name}
-                      className="text-xs px-3 py-1.5 rounded-lg bg-primary/10 text-primary font-medium border border-primary/20"
-                    >
-                      {skill.name}
-                    </span>
-                  ))}
-                  <Button
-                    variant="ghost"
-                    size="sm"
-                    onClick={() => document.getElementById('skills')?.scrollIntoView({ behavior: 'smooth' })}
-                    className="text-xs h-auto px-0 text-muted-foreground hover:text-primary gap-1"
-                  >
-                    View all <ArrowRight className="w-3 h-3" />
-                  </Button>
-                </div>
-              </div>
-            </SlideIn>
           </div>
 
           {/* Stats */}

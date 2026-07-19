@@ -10,6 +10,7 @@ const jakartaSans = Plus_Jakarta_Sans({ subsets: ['latin'], variable: '--font-di
 const jetbrainsMono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' })
 
 export const metadata = {
+  metadataBase: new URL('https://maheero.pages.dev'),
   title: 'Mahmud Abdul Gafar — Software Engineer Portfolio',
   description: 'Software Engineer and Co-Founder. Building web and mobile products across the full stack with React, TypeScript, and Java/Spring Boot.',
   icons: {

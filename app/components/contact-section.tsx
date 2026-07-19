@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, type FormEvent } from 'react';
-import { Send, Mail, MapPin, Github, Linkedin, Twitter } from 'lucide-react';
+import { Send, Mail, MapPin, Github, Linkedin } from 'lucide-react';
 import { siteConfig } from '@/lib/portfolio-data';
 import { Section } from '@/components/layouts/section';
 import { Container } from '@/components/layouts/container';
@@ -29,12 +29,17 @@ export default function ContactSection() {
     }
     setSending(true);
     try {
-      const res = await fetch('/api/contact', {
+      // Web3Forms delivers submissions to the inbox tied to this access key.
+      const res = await fetch('https://api.web3forms.com/submit', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(formData),
+        body: JSON.stringify({
+          access_key: 'eccb43fc-ed49-4bde-9699-15d80cd60621',
+          ...formData,
+        }),
       });
-      if (res?.ok) {
+      const data = await res.json().catch(() => null);
+      if (res?.ok && data?.success) {
         toast.success('Message sent successfully! I\'ll get back to you soon.');
         setFormData({ name: '', email: '', subject: '', message: '' });
       } else {
@@ -50,7 +55,6 @@ export default function ContactSection() {
   const socialLinks = [
     { icon: Github, href: siteConfig?.github ?? '#', label: 'GitHub' },
     { icon: Linkedin, href: siteConfig?.linkedin ?? '#', label: 'LinkedIn' },
-    { icon: Twitter, href: siteConfig?.twitter ?? '#', label: 'Twitter' },
   ];
 
   return (
