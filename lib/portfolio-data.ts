@@ -24,16 +24,49 @@ export const heroData = {
 export const aboutData = {
   heading: 'About Me',
   paragraphs: [
-    'I\'m a versatile software engineer and founding member of Ketapay, an escrow platform securing payments for Nigerian businesses that buy and sell online. Originally trained in the sciences, I transitioned into software engineering in 2023 and have since taken on full product ownership, hands-on QA, and engineering leadership.',
+    'I\'m a versatile software engineer and founding member of Ketapay, an escrow platform securing payments for Nigerian businesses that buy and sell online. Originally trained in the sciences, I started in software in 2022 and went full product-focus in 2023, and have since taken on full product ownership, hands-on QA, and engineering leadership.',
     'I build responsive, user-centered web and mobile products across the stack — from React and TypeScript front-ends to Java/Spring Boot services. I move fluently between writing code, reading and reasoning about unfamiliar codebases, and shaping raw ideas into clear, buildable solutions.',
     'I\'m known as a fast learner and dependable problem solver who ships reliable software in collaborative teams. When I\'m not building, you\'ll find me playing football or basketball, exploring board games, or working on side projects.',
   ],
   stats: [
     { label: 'Projects Built', value: 8 },
     { label: 'Companies', value: 4 },
-    { label: 'Tech Stack', value: 10 },
-    { label: 'Years in Tech', value: 2 },
+    { label: 'Bugs Caught Pre-Launch', value: 150 },
+    { label: 'Years in Tech', value: 4 },
   ],
+};
+
+export type Service = {
+  title: string;
+  description: string;
+  /** Optional proof/outcome line shown at the bottom of the card. */
+  proof?: string;
+};
+
+export const servicesData = {
+  heading: 'Work With Me',
+  subheading:
+    'I help teams ship with confidence — testing what you\'ve built, or building it right the first time.',
+  services: [
+    {
+      title: 'Pre-Launch QA Cycle',
+      description:
+        'Full manual + exploratory test pass of your web or mobile app before release: every critical flow, edge case, and fallback state, with clear reproducible bug reports in your tracker (Linear, Jira, or GitHub Issues).',
+      proof: '150+ defects caught on a fintech escrow platform — zero reached customers.',
+    },
+    {
+      title: 'Test Automation Setup',
+      description:
+        'Playwright end-to-end suites and Postman API test collections for your core user journeys, wired to run on every deploy — so regressions get caught by machines, not users.',
+    },
+    {
+      title: 'Frontend Builds',
+      description:
+        'Responsive, production-grade web apps and marketing sites in TypeScript, React/Next.js, and Supabase — from landing page to full product MVP.',
+    },
+  ] as Service[],
+  cta: 'Start a project',
+  ctaNote: 'Based in Abuja · working remotely with teams worldwide.',
 };
 
 export type SkillGroup = {
@@ -44,11 +77,11 @@ export type SkillGroup = {
 export const skillGroups: SkillGroup[] = [
   {
     title: 'Daily drivers',
-    skills: ['React', 'TypeScript', 'Tailwind', 'Node.js', 'Next.js'],
+    skills: ['React', 'TypeScript', 'Tailwind', 'Node.js', 'Next.js', 'Supabase'],
   },
   {
     title: 'Working knowledge',
-    skills: ['Java', 'Spring Boot', 'Git', 'Supabase'],
+    skills: ['Java', 'Spring Boot', 'Git', 'Docker', 'Kubernetes'],
   },
 ];
 
@@ -242,6 +275,7 @@ export const experienceData: Experience[] = [
 export const navItems = [
   { label: 'Home', href: '#home' },
   { label: 'About', href: '#about' },
+  { label: 'Services', href: '#services' },
   { label: 'Work', href: '#case-study' },
   { label: 'Skills', href: '#skills' },
   { label: 'Now', href: '#now' },

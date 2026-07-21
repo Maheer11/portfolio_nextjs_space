@@ -7,294 +7,128 @@ import Image from 'next/image';
 import { heroData } from '@/lib/portfolio-data';
 import { Badge } from '@/components/ui/badge';
 import { Button } from '@/components/ui/button';
+import { cn } from '@/lib/utils';
 
-// Sketched Brain Center Illustration
-function TechBrain() {
-  return (
-    <svg width="120" height="120" viewBox="0 0 120 120" className="opacity-80">
-      {/* Left hemisphere */}
-      <path
-        d="M 40 30 Q 30 45 35 60 Q 28 75 40 85 Q 55 92 60 85"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        className="text-primary/60"
-      />
-      {/* Right hemisphere */}
-      <path
-        d="M 80 30 Q 90 45 85 60 Q 92 75 80 85 Q 65 92 60 85"
-        fill="none"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        className="text-primary/60"
-      />
-      {/* Brain stem */}
-      <path
-        d="M 58 85 Q 55 95 60 105"
-        stroke="currentColor"
-        strokeWidth="1.5"
-        className="text-primary/50"
-      />
-      {/* Neural nodes - left */}
-      <circle cx="45" cy="40" r="2.5" fill="currentColor" className="text-primary/70" />
-      <circle cx="35" cy="55" r="2" fill="currentColor" className="text-primary/60" />
-      <circle cx="42" cy="72" r="2" fill="currentColor" className="text-primary/60" />
-      {/* Neural nodes - center */}
-      <circle cx="60" cy="35" r="2.5" fill="currentColor" className="text-primary/70" />
-      <circle cx="60" cy="60" r="2.5" fill="currentColor" className="text-primary/70" />
-      {/* Neural nodes - right */}
-      <circle cx="75" cy="40" r="2.5" fill="currentColor" className="text-primary/70" />
-      <circle cx="85" cy="55" r="2" fill="currentColor" className="text-primary/60" />
-      <circle cx="78" cy="72" r="2" fill="currentColor" className="text-primary/60" />
-      {/* Connection lines */}
-      <path d="M 45 40 L 60 35 L 75 40" stroke="currentColor" strokeWidth="1" className="text-primary/30" />
-      <path d="M 35 55 L 60 60 L 85 55" stroke="currentColor" strokeWidth="1" className="text-primary/30" />
-    </svg>
-  );
-}
+// ============ Quality status board (desktop hero visual) ============
+// One row is deliberately "lying" — clicking it plays a defect-caught-and-fixed
+// beat; clicking a healthy row shakes it. Mirrors the QA positioning in copy.
+const BOARD_ROWS = [
+  { label: 'critical flows', value: 'passing' },
+  { label: 'edge cases', value: 'covered' },
+  { label: 'fallback states', value: 'tested' },
+  { label: 'regressions escaped', value: '0', bugValue: '1' },
+  { label: 'availability', value: 'abuja → worldwide' },
+];
 
-// Company Logos as SVG
-const logos = {
-  React: (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <circle cx="12" cy="12" r="1.5" fill="currentColor" />
-      <ellipse cx="12" cy="12" rx="6" ry="3" fill="none" stroke="currentColor" strokeWidth="1" />
-      <ellipse cx="12" cy="12" rx="6" ry="3" fill="none" stroke="currentColor" strokeWidth="1" transform="rotate(60 12 12)" />
-      <ellipse cx="12" cy="12" rx="6" ry="3" fill="none" stroke="currentColor" strokeWidth="1" transform="rotate(120 12 12)" />
-    </svg>
-  ),
-  TypeScript: (
-    <svg viewBox="0 0 24 24" className="w-full h-full" fill="currentColor">
-      <rect x="2" y="2" width="20" height="20" rx="2" />
-      <text x="12" y="16" fontSize="9" fontWeight="bold" textAnchor="middle" fill="white">TS</text>
-    </svg>
-  ),
-  Java: (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <path fill="currentColor" d="M8 9c0-1.1.9-2 2-2s2 .9 2 2-1 2-2 2-2-.9-2-2zm6 0c0-1.1.9-2 2-2s2 .9 2 2-1 2-2 2-2-.9-2-2zm-3 5c-3 0-5.5 1.5-5.5 3.5v4h11v-4c0-2-2.5-3.5-5.5-3.5z" />
-    </svg>
-  ),
-  'Spring Boot': (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <circle cx="12" cy="12" r="10" fill="none" stroke="currentColor" strokeWidth="2" />
-      <path d="M12 7v10M7 12h10" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
-    </svg>
-  ),
-  'Node.js': (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8m1-13h-2v6h2v-6m0 8h-2v2h2v-2z" />
-    </svg>
-  ),
-  'Next.js': (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <rect x="2" y="2" width="20" height="20" rx="2" fill="currentColor" />
-      <path d="M8 7h8M8 12h6M8 17h4" stroke="white" strokeWidth="1.5" />
-    </svg>
-  ),
-  Tailwind: (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2m-4 12c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2m8 0c-1.1 0-2-.9-2-2s.9-2 2-2 2 .9 2 2-.9 2-2 2z" />
-    </svg>
-  ),
-  Git: (
-    <svg viewBox="0 0 24 24" className="w-full h-full">
-      <path fill="currentColor" d="M12 2C6.5 2 2 6.5 2 12c0 4.4 2.9 8.1 6.8 9.2.5.1.7-.2.7-.5v-1.8c-2.8.6-3.4-1.4-3.4-1.4-.4-1.1-1.1-1.4-1.1-1.4-.9-.6.1-.6.1-.6 1 .1 1.5 1 1.5 1 .9 1.5 2.3 1.1 2.9.8.1-.6.3-1.1.6-1.4-2.2-.2-4.5-1.1-4.5-5 0-1.1.4-2 1-2.7-.1-.3-.4-1.3.1-2.7 0 0 .8-.3 2.7 1 .8-.2 1.6-.3 2.5-.3s1.7.1 2.5.3c1.9-1.3 2.7-1 2.7-1 .5 1.4.2 2.4.1 2.7.6.7 1 1.6 1 2.7 0 3.9-2.3 4.8-4.5 5 .4.3.7.9.7 1.8v2.8c0 .3.2.6.7.5C19.1 20.1 22 16.4 22 12c0-5.5-4.5-10-10-10z" />
-    </svg>
-  ),
-};
+type BoardPhase = 'hunting' | 'fixing' | 'fixed';
 
-// Orbiting Tools with Company Logos
-function OrbitalSkills() {
+function QualityStatusBoard() {
   const prefersReducedMotion = useReducedMotion();
+  const [phase, setPhase] = useState<BoardPhase>('hunting');
+  const [shakenRow, setShakenRow] = useState<number | null>(null);
 
-  const skills = [
-    { name: 'React', logo: logos.React, speed: 25, size: 'large' },
-    { name: 'TypeScript', logo: logos.TypeScript, speed: 28, size: 'large' },
-    { name: 'Java', logo: logos.Java, speed: 32, size: 'large' },
-    { name: 'Spring Boot', logo: logos['Spring Boot'], speed: 35, size: 'medium' },
-    { name: 'Node.js', logo: logos['Node.js'], speed: 38, size: 'medium' },
-    { name: 'Next.js', logo: logos['Next.js'], speed: 30, size: 'medium' },
-    { name: 'Tailwind', logo: logos.Tailwind, speed: 27, size: 'medium' },
-    { name: 'Git', logo: logos.Git, speed: 33, size: 'small' },
-  ];
-
-  const getSizeClass = (size: string) => {
-    switch (size) {
-      case 'large':
-        return 'w-20 h-20';
-      case 'medium':
-        return 'w-16 h-16';
-      case 'small':
-        return 'w-14 h-14';
-      default:
-        return 'w-16 h-16';
+  const handleRowClick = (idx: number, isBug: boolean) => {
+    if (phase !== 'hunting') return;
+    if (!isBug) {
+      setShakenRow(idx);
+      setTimeout(() => setShakenRow(null), 450);
+      return;
     }
+    if (prefersReducedMotion) {
+      setPhase('fixed');
+      return;
+    }
+    setPhase('fixing');
+    setTimeout(() => setPhase('fixed'), 1000);
   };
 
-  // Fixed orbital radius for even distribution
-  const baseRadius = 120;
-  const radiusIncrement = 15;
-
-  const getOrbitRadius = (index: number) => {
-    return baseRadius + index * radiusIncrement;
-  };
+  const caption =
+    phase === 'hunting'
+      ? 'one status is lying — click it'
+      : phase === 'fixing'
+        ? 'defect logged → fix verified…'
+        : 'caught it before your users did ✓';
 
   return (
-    <div className="w-72 h-72 sm:w-80 sm:h-80 md:w-96 md:h-96 relative flex items-center justify-center">
-      {/* Central brain */}
-      <motion.div
-        className="absolute z-20 flex items-center justify-center"
-        initial={{ opacity: 0, scale: 0.5 }}
-        animate={{ opacity: 1, scale: 1 }}
-        transition={{ duration: 1.5, ease: 'easeOut', delay: 0.5 }}
-      >
-        <div className="w-32 h-32 rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border-2 border-primary/30 flex items-center justify-center">
-          <TechBrain />
-        </div>
-      </motion.div>
-
-      {/* Orbital rings */}
-      {!prefersReducedMotion && [0, 1, 2, 3].map((ring) => (
-        <motion.div
-          key={`ring-${ring}`}
-          className="absolute rounded-full border border-primary/10"
-          style={{
-            width: (ring + 1) * 80,
-            height: (ring + 1) * 80,
-          }}
-          initial={{ opacity: 0 }}
-          animate={{ opacity: [0.3, 0.5, 0.3] }}
-          transition={{
-            opacity: { duration: 8, repeat: Infinity, ease: 'easeInOut' },
-            delay: 0.8 + ring * 0.1,
-          }}
+    <div className="w-full max-w-md rounded-2xl border border-border/60 bg-gradient-to-br from-card to-card/70 shadow-lg overflow-hidden">
+      {/* Header */}
+      <div className="flex items-center justify-between px-6 py-4 border-b border-border/60">
+        <span className="font-mono text-xs text-primary/80 tracking-wider">QA / LIVE STATUS</span>
+        <motion.span
+          className="w-2 h-2 rounded-full bg-primary"
+          animate={prefersReducedMotion ? undefined : { scale: [1, 1.4, 1], opacity: [1, 0.6, 1] }}
+          transition={{ duration: 2, repeat: Infinity }}
+          aria-hidden="true"
         />
-      ))}
-
-      {/* Faint outward pulse (subtle, only when not reduced motion) */}
-      {!prefersReducedMotion && (
-        <motion.div
-          className="absolute inset-0 rounded-full border border-primary/20"
-          animate={{ scale: [1, 2.5], opacity: [0.4, 0] }}
-          transition={{
-            duration: 4,
-            repeat: Infinity,
-            ease: 'easeOut',
-            delay: 2,
-          }}
-        />
-      )}
-
-      {/* Orbiting Tools - Emanate from Brain */}
-      {skills.map((skill, index) => {
-        const orbitRadius = getOrbitRadius(index);
-        const angle = (index / skills.length) * 360;
-
-        if (prefersReducedMotion) {
-          // Static orbit layout for reduced motion
-          const radian = (angle * Math.PI) / 180;
-          const x = Math.cos(radian) * orbitRadius;
-          const y = Math.sin(radian) * orbitRadius;
-
-          return (
-            <div
-              key={skill.name}
-              className="absolute"
-              style={{
-                left: '50%',
-                top: '50%',
-                transform: `translate(calc(-50% + ${x}px), calc(-50% + ${y}px))`,
-              }}
-            >
-              <SkillIcon skill={skill} />
-            </div>
-          );
-        }
-
-        return (
-          <motion.div
-            key={skill.name}
-            className="absolute"
-            initial={{ opacity: 0, x: 0, y: 0 }}
-            animate={{
-              opacity: 1,
-              x: Math.cos((angle * Math.PI) / 180) * orbitRadius,
-              y: Math.sin((angle * Math.PI) / 180) * orbitRadius,
-              rotate: [0, 360],
-            }}
-            transition={{
-              opacity: { duration: 0.8, ease: 'easeOut', delay: 1.5 + index * 0.12 },
-              x: { duration: 1.2, ease: 'easeOut', delay: 1.5 + index * 0.12 },
-              y: { duration: 1.2, ease: 'easeOut', delay: 1.5 + index * 0.12 },
-              rotate: {
-                duration: skill.speed,
-                repeat: Infinity,
-                ease: 'linear',
-                delay: 1.5 + index * 0.12,
-              },
-            }}
-            style={{
-              left: '50%',
-              top: '50%',
-              translateX: '-50%',
-              translateY: '-50%',
-            }}
-          >
-            <SkillIcon skill={skill} />
-          </motion.div>
-        );
-      })}
-    </div>
-  );
-}
-
-// Extracted skill icon component for reusability
-function SkillIcon({ skill }: { skill: any }) {
-  const prefersReducedMotion = useReducedMotion();
-
-  const sizeMap = {
-    large: 'w-20 h-20',
-    medium: 'w-16 h-16',
-    small: 'w-14 h-14',
-  };
-
-  return (
-    <motion.div
-      className={`${sizeMap[skill.size as keyof typeof sizeMap]} rounded-full bg-gradient-to-br from-primary/20 to-primary/5 border border-primary/30 flex items-center justify-center cursor-pointer group`}
-      whileHover={
-        !prefersReducedMotion
-          ? {
-              scale: 1.25,
-              boxShadow: `0 0 20px hsl(var(--primary) / 0.6)`,
-            }
-          : {}
-      }
-    >
-      {/* Logo Glow */}
-      {!prefersReducedMotion && (
-        <motion.div
-          className="absolute inset-0 rounded-full bg-primary/20 blur-md"
-          animate={{
-            opacity: [0.3, 0.6, 0.3],
-          }}
-          transition={{
-            duration: 3,
-            repeat: Infinity,
-            ease: 'easeInOut',
-          }}
-        />
-      )}
-
-      {/* Logo */}
-      <div className="relative z-10 w-3/4 h-3/4 text-primary/80 group-hover:text-primary transition-colors">
-        {skill.logo}
       </div>
 
-      {/* Label Tooltip */}
-      <motion.div className="absolute -bottom-12 left-1/2 -translate-x-1/2 whitespace-nowrap bg-card border border-border/50 rounded-lg px-3 py-1.5 opacity-0 group-hover:opacity-100 transition-opacity pointer-events-none">
-        <p className="text-xs font-semibold text-foreground">{skill.name}</p>
-      </motion.div>
-    </motion.div>
+      {/* Status rows */}
+      <div className="divide-y divide-border/40">
+        {BOARD_ROWS.map((row, idx) => {
+          const isBug = 'bugValue' in row;
+          const showBug = isBug && phase === 'hunting';
+          const value = isBug
+            ? phase === 'hunting'
+              ? row.bugValue
+              : phase === 'fixing'
+                ? 'logged → fixing…'
+                : row.value
+            : row.value;
+
+          return (
+            <motion.button
+              key={row.label}
+              type="button"
+              onClick={() => handleRowClick(idx, isBug)}
+              animate={
+                shakenRow === idx && !prefersReducedMotion
+                  ? { x: [0, -5, 5, -3, 3, 0] }
+                  : { x: 0 }
+              }
+              transition={{ duration: 0.4 }}
+              className={cn(
+                'w-full flex items-center justify-between gap-4 px-6 py-3.5 text-left transition-colors',
+                phase === 'hunting' ? 'hover:bg-primary/5 cursor-pointer' : 'cursor-default'
+              )}
+            >
+              <span className="flex items-center gap-3 min-w-0">
+                <span
+                  className={cn(
+                    'w-2 h-2 rounded-full flex-shrink-0 transition-colors',
+                    showBug ? 'bg-destructive' : 'bg-primary/70'
+                  )}
+                />
+                <span className="text-sm text-muted-foreground truncate">{row.label}</span>
+              </span>
+              <span
+                className={cn(
+                  'font-mono text-xs flex-shrink-0 transition-colors',
+                  showBug
+                    ? 'text-destructive'
+                    : isBug && phase === 'fixed'
+                      ? 'text-primary font-semibold'
+                      : 'text-foreground/80'
+                )}
+              >
+                {value}
+              </span>
+            </motion.button>
+          );
+        })}
+      </div>
+
+      {/* Caption */}
+      <div className="px-6 py-4 border-t border-border/60" role="status">
+        <span
+          className={cn(
+            'font-mono text-xs tracking-wide',
+            phase === 'fixed' ? 'text-primary' : 'text-muted-foreground'
+          )}
+        >
+          {caption}
+        </span>
+      </div>
+    </div>
   );
 }
 
@@ -433,7 +267,7 @@ function MobileHeroBento({ scrollTo }: { scrollTo: (id: string) => void }) {
             Building in public
           </span>
           <span className="mt-1 flex items-center gap-1 text-xs text-muted-foreground">
-            Ketapay · Pre-Launch
+            Ketapay · MVP1 shipped
             <ArrowUpRight className="w-3.5 h-3.5 text-primary flex-shrink-0" />
           </span>
         </motion.button>
@@ -595,7 +429,7 @@ export default function HeroSection() {
               transition={{ duration: 1.5, ease: 'easeOut' }}
               className="hidden lg:flex justify-center order-2 lg:order-1"
             >
-              <OrbitalSkills />
+              <QualityStatusBoard />
             </motion.div>
 
             {/* Right: Text Content - Gentle Entrance */}
@@ -646,7 +480,7 @@ export default function HeroSection() {
                 {/* Bio Bullets - Enhanced Colors & Interactivity */}
                 <div className="grid grid-cols-1 gap-3 sm:gap-4 pt-4 border-t border-primary/10">
                   {[
-                    { icon: '→', text: 'Building products that matter', highlight: 'products' },
+                    { icon: '→', text: 'QA that catches it before your users do', highlight: 'QA' },
                     { icon: '→', text: 'Full-stack • Reliable', highlight: 'Reliable' },
                     { icon: '→', text: 'Shipping with quality & speed', highlight: 'quality' },
                   ].map((item, idx) => (

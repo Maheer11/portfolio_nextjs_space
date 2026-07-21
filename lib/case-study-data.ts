@@ -1,23 +1,23 @@
 export const ketapayCaseStudy = {
   title: 'Ketapay',
   subtitle: 'Escrow Platform for Nigerian Payments',
-  stage: 'Pre-Launch',
+  stage: 'MVP1 shipped',
   status: 'Building in Public',
 
   problem: `Nigerian businesses lose money to payment fraud. A buyer gets goods but doesn't pay. A seller ships products but gets scammed. We built Ketapay to secure both sides—hold the buyer's money safely until everyone confirms the transaction is complete.`,
 
   myRole: [
     {
-      title: 'QA Testing',
-      description: 'Built test cases for payment flows, escrow logic, and edge cases. Caught issues before they cost real money.',
+      title: 'QA Ownership (MVP1)',
+      description: 'Owned the full QA cycle: tested funding, holding, release, and every fallback state across TestFlight builds. Logged 150+ reproducible defects in Linear and ran a find → log → fix → verify loop with engineering. Zero of those defects reached customers.',
     },
     {
-      title: 'UI/UX Testing',
-      description: 'Tested user flows end-to-end. Made sure a seller could actually use the app without confusion. Sometimes design looked good but felt clunky in practice.',
+      title: 'AI-Assisted Testing Pipeline',
+      description: 'Built an agent-driven exploratory testing workflow (Chrome DevTools MCP + Claude Code) that inspects live browser sessions — surfacing console errors, failed network requests, and UI state faster than a manual pass.',
     },
     {
-      title: 'System Design',
-      description: 'Understood the escrow transaction flow—how money moves, how states change, what happens if a payment fails halfway. This is where the reliability matters most.',
+      title: 'Engineering & Product',
+      description: 'Built the public marketing site (Next.js, TypeScript, Tailwind) live at ketapay.com, and contributed to architecture decisions by mapping escrow state transitions and failure modes before code was written.',
     },
   ],
 
@@ -46,11 +46,9 @@ export const ketapayCaseStudy = {
     },
   ],
 
-  keyTakeaway: `Ketapay taught me that product thinking > just coding. QA caught bugs before launch. Understanding system design meant I could spot issues in architecture meetings. The biggest value wasn't in the code I wrote—it was in asking "what if this fails?"`,
+  keyTakeaway: `In fintech, the most valuable question is 'what happens if this fails?' — I asked it early enough that the answers shipped as working code, not incident reports.`,
 
-  currentStatus: `App is built and ready. Website is live. We're working through the launch sequence. This is where the real learning happens—talking to early users, handling the unexpected, iterating fast.`,
-
-  whyItsInMyPortfolio: `Ketapay isn't a finished project to brag about. It's where I learned that building matters more than the outcome. It's messy, it's ongoing, and that's the point. It shows I can handle ambiguity, learn fast, and think beyond "did this feature work?"`,
+  currentStatus: `MVP1 is built and QA-hardened; the team is executing the launch sequence. I continue to own quality as the platform heads to market.`,
 };
 
 export const learningsAndPrinciples = [
@@ -115,7 +113,7 @@ export const potentialBlogTopics = [
   },
   {
     title: 'Why I Transitioned from Zoology to Software Engineering (And Actually Stuck)',
-    description: 'The messy, real story. Not inspirational BS. The actual moments where it could have failed.',
+    description: 'The real story, including the moments where it could have failed — and what made it stick.',
     why: 'Unique perspective. People love real, honest career transitions.',
   },
 ];
@@ -125,5 +123,5 @@ Building Ketapay, I realized I'm not a "write perfect code" engineer. I'm a "und
 
 The transition from Zoology to Software felt like I had to learn everything. Turns out, that's an advantage. I don't take for granted how things work. I dig into the "why." That's served me well in fintech where getting it wrong costs people money.
 
-I'm not done learning. Not even close. But I'm comfortable learning in public, admitting when I'm wrong, and pivoting when I realize I chose the wrong tool. That's probably more valuable than knowing everything.
+I learn in public: I say when I'm wrong, and I pivot fast when I've picked the wrong tool. That habit compounds — and it's been worth more than any single framework I know.
 `;

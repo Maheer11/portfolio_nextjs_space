@@ -293,7 +293,7 @@ export default function CaseStudySection() {
             <div>
               <Kicker index={2} label="Role" />
               <h3 className="text-2xl font-bold text-foreground mb-8">
-                My Role (Product Thinking &gt; Just Code)
+                What I Delivered
               </h3>
               <div className="grid md:grid-cols-3 gap-6">
                 {ketapayCaseStudy.myRole.map((role, idx) => {
@@ -325,39 +325,24 @@ export default function CaseStudySection() {
                 <blockquote className="relative font-display text-xl sm:text-2xl text-foreground leading-relaxed">
                   <Highlight
                     text={ketapayCaseStudy.keyTakeaway}
-                    phrases={['product thinking > just coding', '"what if this fails?"']}
+                    phrases={["'what happens if this fails?'"]}
                   />
                 </blockquote>
               </figure>
             </div>
           </SlideIn>
 
-          {/* 05 / Now — merged status + why-it's-here footer */}
+          {/* 04 / Now — current status */}
           <SlideIn from="left" className="mt-20 pb-12">
-            <div>
+            <div className="max-w-3xl">
               <Kicker index={4} label="Now" />
-              <div className="grid md:grid-cols-2 gap-6">
-                <div>
-                  <h3 className="text-2xl font-bold text-foreground mb-4">Where We Are Now</h3>
-                  <p className="text-muted-foreground leading-relaxed">
-                    <Highlight
-                      text={ketapayCaseStudy.currentStatus}
-                      phrases={['talking to early users']}
-                    />
-                  </p>
-                </div>
-                <div className="rounded-2xl bg-muted/50 p-6 sm:p-8 border border-border/50 self-start">
-                  <h4 className="font-semibold text-foreground mb-3">
-                    Why This is in My Portfolio
-                  </h4>
-                  <p className="text-sm text-muted-foreground leading-relaxed">
-                    <Highlight
-                      text={ketapayCaseStudy.whyItsInMyPortfolio}
-                      phrases={['building matters more than the outcome']}
-                    />
-                  </p>
-                </div>
-              </div>
+              <h3 className="text-2xl font-bold text-foreground mb-4">Where We Are Now</h3>
+              <p className="text-muted-foreground leading-relaxed">
+                <Highlight
+                  text={ketapayCaseStudy.currentStatus}
+                  phrases={['QA-hardened', 'own quality']}
+                />
+              </p>
             </div>
           </SlideIn>
         </div>
